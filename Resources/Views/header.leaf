@@ -1,0 +1,25 @@
+<!-- Resources/Views/header.leaf -->
+#set("title") {
+    Vapor CRUD App
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>#(title)</title>
+</head>
+<body>
+    <header>
+        <h1>Vapor CRUD App</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/products">Products</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        #body
+    </main>
+</body>
+</html>
