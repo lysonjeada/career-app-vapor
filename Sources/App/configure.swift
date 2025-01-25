@@ -5,22 +5,28 @@ import Vapor
 import Leaf
 
 // configures your application
+
 public func configure(_ app: Application) throws {
-    app.databases.use(.postgres(
-        hostname: "localhost",
-        username: "vapor_user",
-        password: "s3nh41404",
-        database: "vapor_database"
-    ), as: .psql)
+    // Recupera a senha do banco de dados das variáveis de ambiente
+    guard let password = Environment.get("DATABASE_PASSWORD") else {
+        fatalError("DATABASE_PASSWORD não configurado")
+    }
     
-    app.migrations.add(CreateInterview())
+    // Configuração da string de conexão com o banco de dados Postgres
+    let databaseURL = "postgres://postgres:\(password)@localhost:5433/career_app_rails"
+    
+    // Configura o driver Postgres para Fluent
+    app.databases.use(try .postgres(url: databaseURL), as: .psql)
 
-    app.views.use(.leaf)
+    // Rota padrão
+    app.get { req in
+        return "Hello, Vapor!"
+    }
 
+    // Configurações adicionais, como migrações, middlewares, etc.
     try routes(app)
-
-    try app.autoMigrate().wait()
 }
+
 
 // public func configure(_ app: Application) async throws {
 //     // uncomment to serve files from /Public folder
